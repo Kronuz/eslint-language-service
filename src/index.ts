@@ -52,10 +52,6 @@ interface ESLintReport {
     results: ESLintDocumentReport[];
 }
 
-interface CLIOptions {
-    cwd?: string;
-}
-
 let globalPackageManagerPath: Map<string, string> = new Map();  // map stores undefined values to represent failed resolutions
 
 function getGlobalPackageManagerPath(packageManager?: string): string | undefined {
@@ -301,15 +297,8 @@ function init(modules: {typescript: typeof ts_module}) {
 
                 try { // protect against eslint crashes
                     let options = { fix: false };
-                    let newOptions: CLIOptions = Object.assign(Object.create(null), options);
-                    let directory = path.dirname(fileName);
-                    if (directory) {
-                        if (path.isAbsolute(directory)) {
-                            newOptions.cwd = directory;
-                        }
-                    }
                     const library = loadLibrary('eslint', fileName);
-                    let cli = new library.CLIEngine(newOptions);
+                    let cli = new library.CLIEngine(options);
                     report = cli.executeOnText(file.text, fileName);
                 } catch (err) {
                     let errorMessage = `unknown error`;
