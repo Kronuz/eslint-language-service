@@ -35,7 +35,7 @@ interface AutoFix {
     label: string;
     documentVersion: number;
     ruleId: string;
-    edit: ESLintAutoFixEdit;
+    edit?: ESLintAutoFixEdit;
 }
 
 interface ESLintDocumentReport {
@@ -183,7 +183,7 @@ function init(modules: {typescript: typeof ts_module}) {
 
         function convertReplacementToTextChange(editInfo: AutoFix): ts.TextChange {
             return {
-                newText: editInfo.edit.text || '',
+                newText: editInfo.edit && editInfo.edit.text || '',
                 span: { start: editInfo.edit.range[0], length: editInfo.edit.range[1] - editInfo.edit.range[0] }
             };
         }
