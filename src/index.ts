@@ -264,7 +264,14 @@ function init(modules: {typescript: typeof ts_module}) {
         function sortProblems(problems: ESLintProblem[]): ESLintProblem[] {
             // The problems are sorted by position, we sort on the position of the first replacement
             return problems.sort((a, b) => {
-                return a.fix.range[0] - b.fix.range[0];
+                if (a.fix && b.fix) {
+                    return a.fix.range[0] - b.fix.range[0];
+                } else if (a.fix) {
+                    return 1;
+                } else if (b.fix) {
+                    return -1;
+                }
+                return 0;
             });
         }
 
