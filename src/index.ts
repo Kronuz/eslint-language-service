@@ -277,7 +277,7 @@ function init(modules: {typescript: typeof ts_module}) {
 
         function getNonOverlappingReplacements(documentFixes: Map<string, ESLintProblem>): AutoFix[] {
             function overlaps(a: AutoFix, b: AutoFix): boolean {
-                return a.edit.range[1] >= b.edit.range[0];
+                return a && b ? a.edit.range[1] >= b.edit.range[0] : !!a;
             }
 
             let sortedProblems = sortProblems([...documentFixes.values()]);
